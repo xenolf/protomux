@@ -25,7 +25,7 @@ var standardProbes = map[Protocol]probe{
 	TLS:  tlsProbe{},
 }
 
-type ProtoListener struct {
+type Listener struct {
 	net.Listener
 	probes map[Protocol]probe
 }
@@ -37,13 +37,13 @@ func Listen(addr string) (net.Listener, error) {
 		return nil, err
 	}
 
-	return &ProtoListener{listener, standardProbes}, nil
+	return &Listener{listener, standardProbes}, nil
 }
 
 // Accept waits for and returns the next connection to the listener
 // after applying protocol detection probes to it. The net.Conn returned
 // will be untouched with all bytes ready to read.
-func (p *ProtoListener) Accept() (net.Conn, error) {
+func (p *Listener) Accept() (net.Conn, error) {
 	conn, err := p.Listener.Accept()
 	if err != nil {
 		return nil, err

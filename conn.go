@@ -10,22 +10,22 @@ const (
 	preReadBufferSize = 128
 )
 
-// ProtoConn wraps a net.Conn for content introspection
-type ProtoConn struct {
+// Conn wraps a net.Conn for content introspection
+type Conn struct {
 	net.Conn
 	buffer   *bytes.Buffer
 	protocol Protocol
 }
 
-func wrapConn(conn net.Conn) *ProtoConn {
-	return &ProtoConn{
+func wrapConn(conn net.Conn) *Conn {
+	return &Conn{
 		Conn:     conn,
 		buffer:   bytes.NewBuffer(make([]byte, 0, preReadBufferSize)),
 		protocol: None,
 	}
 }
 
-func (c *ProtoConn) Read(b []byte) (n int, err error) {
+func (c *Conn) Read(b []byte) (n int, err error) {
 	// If the buffer is already drained, read from conn
 	if c.buffer == nil {
 		return c.Conn.Read(b)
@@ -45,17 +45,17 @@ func (c *ProtoConn) Read(b []byte) (n int, err error) {
 	return
 }
 
-// GetProtocol returns the determined protocol.
-func (c *ProtoConn) GetProtocol() Protocol {
+// Protocol returns the determined protocol.
+func (c *Conn) Protocol() Protocol {
 	return c.protocol
 }
 
-func (c *ProtoConn) fillBuffer() {
+func (c *Conn) fillBuffer() {
 	buf := make([]byte, preReadBufferSize)
 	c.Conn.Read(buf)
 	c.buffer.Write(buf)
 }
 
-func (c *ProtoConn) setProtocol(newType Protocol) {
+func (c *Conn) setProtocol(newType Protocol) {
 	c.protocol = newType
 }
