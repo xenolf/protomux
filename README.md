@@ -7,13 +7,13 @@ if err != nil {
 }
 
 for {
-  var conn protomux.ProtoConn
+  var conn protomux.Conn
   conn, err = listener.Accept()
   if err != nil {
     return err
   }
   
-  switch conn.GetProtocol() {
+  switch conn.Protocol() {
   case protomux.HTTP:
     // do something
   case protomux.TLS:
