@@ -4,6 +4,10 @@ type tlsProbe struct {
 }
 
 func (p tlsProbe) apply(data []byte) bool {
+	if len(data) < 3 {
+		return false
+	}
+	
 	// TLS packet starts with a record "Hello" (0x16), followed by version
 	// (0x03 0x00-0x03) (RFC6101 A.1)
 	// This means we reject SSLv2 and lower, which is actually a good thing (RFC6176)
