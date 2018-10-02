@@ -1,0 +1,16 @@
+{
+  "summary": {
+    "title": "NWTN",
+    "owner": "SE"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "Overview",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "id": 0
+      }
+    ]
+  }
+}
